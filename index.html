@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>StatFlow – Analisis Data</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>StatFlow – Analisis Data Statistik</title>
+    <!-- Chart.js untuk grafik -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
+    <!-- SheetJS untuk import Excel -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
     </script>
     <style>
+        /* ============ RESET & BASE ============ */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: -apple-system, 'Segoe UI', Roboto, system-ui, sans-serif;
         }
         body {
             background: #eef2f7;
@@ -34,6 +39,8 @@
             overflow: hidden;
             border: 1px solid #d9e2ed;
         }
+
+        /* ============ HEADER ============ */
         .header {
             background: #1b2b44;
             padding: 14px 24px;
@@ -59,11 +66,15 @@
             padding: 4px 16px;
             border-radius: 30px;
         }
+
+        /* ============ MAIN BODY ============ */
         .main-body {
             display: flex;
             flex-wrap: wrap;
             min-height: 600px;
         }
+
+        /* ============ SIDEBAR KIRI ============ */
         .sidebar {
             width: 240px;
             background: #f5f9ff;
@@ -100,46 +111,13 @@
             color: #0b2b50;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
         }
+
+        /* ============ CENTER AREA ============ */
         .center-area {
             flex: 1;
             padding: 20px 24px;
             min-width: 280px;
             background: #fbfdff;
-        }
-        .data-panel {
-            background: white;
-            border-radius: 16px;
-            border: 1px solid #e3ecf5;
-            padding: 12px 0 0 0;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
-        }
-        .data-panel .table-wrap {
-            overflow-x: auto;
-            max-height: 380px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-        th {
-            background: #f0f6fe;
-            color: #1f3a5c;
-            font-weight: 600;
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 2px solid #d0ddee;
-            position: sticky;
-            top: 0;
-            background: #f0f6fe;
-            z-index: 2;
-        }
-        td {
-            padding: 8px 12px;
-            border-bottom: 1px solid #eaeff6;
-            color: #1e2f44;
         }
         .import-area {
             display: flex;
@@ -181,6 +159,66 @@
         input[type="file"] {
             display: none;
         }
+        .auto-badge {
+            font-size: 0.7rem;
+            background: #cbdae9;
+            border-radius: 30px;
+            padding: 0 12px;
+            color: #102b47;
+            line-height: 28px;
+            display: inline-block;
+        }
+        .status-text {
+            font-size: 0.8rem;
+            color: #3c5f82;
+            margin-left: auto;
+        }
+
+        /* ============ DATA TABLE ============ */
+        .data-panel {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e3ecf5;
+            padding: 12px 0 0 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+        }
+        .data-panel .table-wrap {
+            overflow-x: auto;
+            max-height: 380px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th {
+            background: #f0f6fe;
+            color: #1f3a5c;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid #d0ddee;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eaeff6;
+            color: #1e2f44;
+        }
+        .data-panel .panel-header {
+            padding: 0 12px 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            color: #23456b;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        /* ============ RIGHT PANEL ============ */
         .right-panel {
             width: 400px;
             background: #f7faff;
@@ -219,6 +257,15 @@
         .result-box table th {
             padding: 4px 8px;
         }
+        .badge-method {
+            background: #d3e2f7;
+            border-radius: 40px;
+            padding: 2px 14px;
+            font-size: 0.7rem;
+            color: #163153;
+        }
+
+        /* ============ EXPLANATION & CONCLUSION ============ */
         .result-box .explanation {
             background: #f0f7fe;
             padding: 10px 12px;
@@ -245,6 +292,8 @@
         .result-box .conclusion strong {
             color: #0d3d1a;
         }
+
+        /* ============ CHART ============ */
         .chart-container {
             background: white;
             border-radius: 16px;
@@ -257,88 +306,15 @@
             width: 100% !important;
             height: 100% !important;
         }
-        .badge-method {
-            background: #d3e2f7;
-            border-radius: 40px;
-            padding: 2px 14px;
-            font-size: 0.7rem;
-            color: #163153;
-        }
-        @media (max-width: 860px) {
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #dde6f0;
-                padding: 12px 0 12px 12px;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .sidebar-category {
-                width: 100%;
-                padding: 6px 12px;
-            }
-            .sidebar-item {
-                padding: 6px 16px;
-                border-radius: 40px;
-                margin-right: 0;
-                font-size: 0.8rem;
-                white-space: nowrap;
-            }
-            .right-panel {
-                width: 100%;
-                border-left: none;
-                border-top: 1px solid #dde6f0;
-            }
-            .center-area {
-                padding: 16px;
-            }
-            .header {
-                padding: 10px 16px;
-            }
-            .import-area {
-                gap: 8px;
-            }
-            .import-btn,
-            .file-label {
-                font-size: 0.8rem;
-                padding: 5px 14px;
-            }
-        }
-        @media (max-width: 480px) {
-            .right-panel {
-                padding: 12px;
-            }
-            .result-box {
-                max-height: 300px;
-                padding: 10px;
-            }
-            .result-box table {
-                font-size: 0.7rem;
-            }
-            .result-box table td,
-            .result-box table th {
-                padding: 3px 5px;
-            }
-            .chart-container {
-                height: 150px;
-            }
-        }
-        .auto-badge {
-            font-size: 0.7rem;
-            background: #cbdae9;
-            border-radius: 30px;
-            padding: 0 12px;
-            color: #102b47;
-            line-height: 28px;
-            display: inline-block;
-        }
-        .status-text {
-            font-size: 0.8rem;
-            color: #3c5f82;
-            margin-left: auto;
+        .chart-title {
+            font-size: 0.75rem;
+            color: #2a4f73;
+            text-align: center;
+            font-weight: 500;
+            margin-top: 2px;
         }
 
+        /* ============ DIALOG MANUAL INPUT ============ */
         .dialog-overlay {
             display: none;
             position: fixed;
@@ -468,28 +444,88 @@
             font-size: 0.85rem;
             color: #1b3a5c;
         }
-        .chart-title {
-            font-size: 0.75rem;
-            color: #2a4f73;
-            text-align: center;
-            font-weight: 500;
-            margin-top: 2px;
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 860px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #dde6f0;
+                padding: 12px 0 12px 12px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .sidebar-category {
+                width: 100%;
+                padding: 6px 12px;
+            }
+            .sidebar-item {
+                padding: 6px 16px;
+                border-radius: 40px;
+                margin-right: 0;
+                font-size: 0.8rem;
+                white-space: nowrap;
+            }
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #dde6f0;
+            }
+            .center-area {
+                padding: 16px;
+            }
+            .header {
+                padding: 10px 16px;
+            }
+            .import-area {
+                gap: 8px;
+            }
+            .import-btn,
+            .file-label {
+                font-size: 0.8rem;
+                padding: 5px 14px;
+            }
         }
-        /* Loading state */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
+        @media (max-width: 480px) {
+            .right-panel {
+                padding: 12px;
+            }
+            .result-box {
+                max-height: 300px;
+                padding: 10px;
+            }
+            .result-box table {
+                font-size: 0.7rem;
+            }
+            .result-box table td,
+            .result-box table th {
+                padding: 3px 5px;
+            }
+            .chart-container {
+                height: 150px;
+            }
+            .dialog-box {
+                padding: 16px 18px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- ============ APP ============ -->
     <div class="app" id="app">
+
+        <!-- HEADER -->
         <div class="header">
             <div class="brand">Stat<span>Flow</span></div>
             <div class="version">📊 v2.0</div>
         </div>
 
+        <!-- MAIN BODY -->
         <div class="main-body">
+
+            <!-- SIDEBAR -->
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-category">📋 Metode Analisis</div>
                 <div class="sidebar-item active" data-method="descriptives">📊 Deskriptif</div>
@@ -501,6 +537,7 @@
                 <div class="sidebar-item" data-method="nonparam">📊 Non-Parametrik</div>
             </div>
 
+            <!-- CENTER AREA -->
             <div class="center-area">
                 <div class="import-area">
                     <label class="file-label" for="fileInput">📂 Import CSV/Excel</label>
@@ -511,27 +548,20 @@
                     <span class="status-text" id="fileStatus">Belum ada data</span>
                 </div>
                 <div class="data-panel">
-                    <div style="padding:0 12px 6px 12px; display:flex; justify-content:space-between; color:#23456b; font-weight:500; font-size:0.85rem;">
+                    <div class="panel-header">
                         <span>📋 Data View</span>
                         <span id="rowCount">0 baris</span>
                     </div>
                     <div class="table-wrap" id="tableWrap">
                         <table id="dataTable">
-                            <thead>
-                                <tr>
-                                    <th>📎</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="color:#8ba3c4; text-align:center; padding:30px 0;">Impor data atau input manual untuk mulai</td>
-                                </tr>
-                            </tbody>
+                            <thead><tr><th>📎</th></tr></thead>
+                            <tbody><tr><td style="color:#8ba3c4; text-align:center; padding:30px 0;">Impor data atau input manual untuk mulai</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
+            <!-- RIGHT PANEL -->
             <div class="right-panel">
                 <div class="result-box" id="resultBox">
                     <h4>📈 Hasil Analisis <span class="badge-method" id="methodBadge">Deskriptif</span></h4>
@@ -544,9 +574,11 @@
                     <div class="chart-title" id="chartTitle">📊 Grafik Data</div>
                 </div>
             </div>
+
         </div>
     </div>
 
+    <!-- ============ DIALOG MANUAL INPUT ============ -->
     <div class="dialog-overlay" id="manualDialog">
         <div class="dialog-box">
             <h3>✏️ Input Data Manual</h3>
@@ -554,9 +586,9 @@
             <input type="text" id="manualHeaders" value="Usia, Pendapatan, Kepuasan" placeholder="misal: Usia, Pendapatan, Kepuasan">
             <label>📝 Data (setiap baris baru, nilai dipisahkan koma)</label>
             <textarea id="manualData" placeholder="25, 5000, 4&#10;30, 6000, 3&#10;22, 4500, 5">25, 5000, 4
-                30, 6000, 3
-                22, 4500, 5
-            35, 7000, 2</textarea>
+30, 6000, 3
+22, 4500, 5
+35, 7000, 2</textarea>
             <div class="hint">
                 💡 <strong>Tips:</strong> Setiap baris = satu responden. Spasi setelah koma tidak masalah.<br>
                 Contoh: <code>25, 5000, 4</code> atau <code>25,5000,4</code>
@@ -581,18 +613,23 @@
         </div>
     </div>
 
+    <!-- ============ JAVASCRIPT ============ -->
     <script>
         (function() {
             'use strict';
 
-            // State
+            // ============================================================
+            //  STATE
+            // ============================================================
             let data = [];
             let headers = [];
             let chartInstance = null;
             let selectedMethod = 'descriptives';
             let numericVars = [];
 
-            // DOM refs
+            // ============================================================
+            //  DOM REFS
+            // ============================================================
             const fileInput = document.getElementById('fileInput');
             const fileStatus = document.getElementById('fileStatus');
             const dataTable = document.getElementById('dataTable');
@@ -605,19 +642,21 @@
             const manualDataBtn = document.getElementById('manualDataBtn');
             const chartTitle = document.getElementById('chartTitle');
 
-            // Dialog manual
             const manualDialog = document.getElementById('manualDialog');
             const manualHeaders = document.getElementById('manualHeaders');
             const manualData = document.getElementById('manualData');
             const closeManualDialog = document.getElementById('closeManualDialog');
             const applyManualData = document.getElementById('applyManualData');
 
-            // ---------- helper ----------
+            // ============================================================
+            //  HELPERS
+            // ============================================================
             function detectNumericVars() {
                 if (!data || !data.length) return [];
-                const numeric = [];
-                headers.forEach(h => {
-                    const vals = data.map(r => parseFloat(r[h])).filter(v => !isNaN(v));
+                var numeric = [];
+                headers.forEach(function(h) {
+                    var vals = data.map(function(r) { return parseFloat(r[h]); }).filter(function(v) { return !
+                        isNaN(v); });
                     if (vals.length === data.length && vals.length > 1) numeric.push(h);
                 });
                 return numeric;
@@ -626,26 +665,26 @@
             function renderTable() {
                 if (!data || data.length === 0) {
                     dataTable.innerHTML =
-                        `<thead><tr><th>📎</th></tr></thead><tbody><tr><td style="color:#8ba3c4; text-align:center; padding:30px 0;">Impor data atau input manual untuk mulai</td></tr></tbody>`;
+                        '<thead><tr><th>📎</th></tr></thead><tbody><tr><td style="color:#8ba3c4; text-align:center; padding:30px 0;">Impor data atau input manual untuk mulai</td></tr></tbody>';
                     rowCount.textContent = '0 baris';
                     numericVars = [];
                     autoBadge.textContent = '🔢 otomatis semua numerik';
                     return;
                 }
-                const h = Object.keys(data[0]);
-                let html = '<thead><tr>';
-                h.forEach(k => html += `<th>${k}</th>`);
+                var h = Object.keys(data[0]);
+                var html = '<thead><tr>';
+                h.forEach(function(k) { html += '<th>' + k + '</th>'; });
                 html += '</tr></thead><tbody>';
-                data.slice(0, 100).forEach(row => {
+                data.slice(0, 100).forEach(function(row) {
                     html += '<tr>';
-                    h.forEach(k => html += `<td>${row[k] !== undefined ? row[k] : ''}</td>`);
+                    h.forEach(function(k) { html += '<td>' + (row[k] !== undefined ? row[k] : '') + '</td>'; });
                     html += '</tr>';
                 });
                 html += '</tbody>';
                 dataTable.innerHTML = html;
                 rowCount.textContent = data.length + ' baris';
                 numericVars = detectNumericVars();
-                autoBadge.textContent = `🔢 ${numericVars.length} variabel numerik terdeteksi`;
+                autoBadge.textContent = '🔢 ' + numericVars.length + ' variabel numerik terdeteksi';
             }
 
             function loadDataFromArray(arr) {
@@ -659,64 +698,53 @@
                 data = arr;
                 headers = Object.keys(arr[0]);
                 renderTable();
-                fileStatus.textContent = `✅ ${arr.length} baris, ${headers.length} kolom`;
-                const firstVar = numericVars.length ? numericVars[0] : headers[0];
+                fileStatus.textContent = '✅ ' + arr.length + ' baris, ' + headers.length + ' kolom';
+                var firstVar = numericVars.length ? numericVars[0] : headers[0];
                 updateChart(firstVar);
                 runCurrentMethod();
             }
 
-            // ---------- Grafik ----------
+            // ============================================================
+            //  CHART
+            // ============================================================
             function updateChart(varName) {
                 if (chartInstance) {
                     chartInstance.destroy();
                     chartInstance = null;
                 }
-
-                const ctx = document.getElementById('resultChart').getContext('2d');
+                var ctx = document.getElementById('resultChart').getContext('2d');
 
                 if (!varName || !data || data.length === 0) {
                     chartInstance = new Chart(ctx, {
                         type: 'bar',
-                        data: {
-                            labels: ['Belum Ada Data'],
-                            datasets: [{ label: 'Data', data: [0], backgroundColor: '#ccc' }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { display: false } }
-                        }
+                        data: { labels: ['Belum Ada Data'], datasets: [{ label: 'Data', data: [0],
+                                backgroundColor: '#ccc' }] },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
                     });
                     chartTitle.textContent = '📊 Belum ada data untuk grafik';
                     return;
                 }
 
-                const vals = data.map(r => parseFloat(r[varName])).filter(v => !isNaN(v));
+                var vals = data.map(function(r) { return parseFloat(r[varName]); }).filter(function(v) { return !isNaN(v); });
                 if (!vals.length) {
                     chartInstance = new Chart(ctx, {
                         type: 'bar',
-                        data: {
-                            labels: ['Tidak Ada Data Numerik'],
-                            datasets: [{ label: 'Data', data: [0], backgroundColor: '#ccc' }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { display: false } }
-                        }
+                        data: { labels: ['Tidak Ada Data Numerik'], datasets: [{ label: 'Data', data: [0],
+                                backgroundColor: '#ccc' }] },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
                     });
                     chartTitle.textContent = '📊 Tidak ada data numerik untuk grafik';
                     return;
                 }
 
-                const sorted = [...vals].sort((a, b) => a - b);
-                const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
-                const median = sorted[Math.floor(sorted.length / 2)];
+                var sorted = vals.slice().sort(function(a, b) { return a - b; });
+                var mean = vals.reduce(function(a, b) { return a + b; }, 0) / vals.length;
+                var median = sorted[Math.floor(sorted.length / 2)];
 
                 chartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: vals.map((_, i) => i + 1),
+                        labels: vals.map(function(_, i) { return i + 1; }),
                         datasets: [{
                             label: varName,
                             data: vals.slice(0, 50),
@@ -728,235 +756,258 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                labels: { font: { size: 10 }, boxWidth: 12 }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: { color: 'rgba(0,0,0,0.05)' }
-                            }
-                        }
+                        plugins: { legend: { display: true, labels: { font: { size: 10 }, boxWidth: 12 } } },
+                        scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } } }
                     }
                 });
-                chartTitle.textContent =
-                    `📊 Distribusi ${varName} | Mean: ${mean.toFixed(2)} | Median: ${median.toFixed(2)} | N: ${vals.length}`;
+                chartTitle.textContent = '📊 Distribusi ' + varName + ' | Mean: ' + mean.toFixed(2) + ' | Median: ' + median
+                    .toFixed(2) + ' | N: ' + vals.length;
             }
 
-            // ---------- Analisis dengan kesimpulan ----------
+            // ============================================================
+            //  ANALISIS
+            // ============================================================
             function getConclusion(method, vars, data) {
-                const conclusions = {
+                var conclusions = {
                     'descriptives': function(vars, data) {
                         if (!vars.length) return 'Tidak ada variabel numerik untuk dianalisis.';
-                        let txt = `Berdasarkan analisis deskriptif pada ${vars.length} variabel:\n`;
-                        vars.forEach(v => {
-                            const vals = data.map(r => parseFloat(r[v])).filter(v => !isNaN(v));
+                        var txt = 'Berdasarkan analisis deskriptif pada ' + vars.length + ' variabel:\n';
+                        vars.forEach(function(v) {
+                            var vals = data.map(function(r) { return parseFloat(r[v]); }).filter(function(v) {
+                                return !isNaN(v);
+                            });
                             if (!vals.length) return;
-                            const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
-                            const std = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / (vals.length -
-                            1));
-                            txt += `• ${v}: rata-rata = ${mean.toFixed(2)}, standar deviasi = ${std.toFixed(2)}, `;
-                            txt += `data berkisar dari ${Math.min(...vals).toFixed(2)} hingga ${Math.max(...vals).toFixed(2)}.\n`;
+                            var mean = vals.reduce(function(a, b) { return a + b; }, 0) / vals.length;
+                            var std = Math.sqrt(vals.reduce(function(a, b) { return a + (b - mean) * (b - mean); },
+                                0) / (vals.length - 1));
+                            txt += '• ' + v + ': rata-rata = ' + mean.toFixed(2) + ', standar deviasi = ' + std
+                                .toFixed(2) + ', ';
+                            txt += 'data berkisar dari ' + Math.min.apply(null, vals).toFixed(2) + ' hingga ' + Math
+                                .max.apply(null, vals).toFixed(2) + '.\n';
                         });
                         return txt;
                     },
                     'ttest': function(vars, data) {
                         if (!vars.length) return 'Tidak ada variabel numerik.';
-                        let txt = `Perbandingan rata-rata untuk ${vars.length} variabel:\n`;
-                        vars.forEach(v => {
-                            const vals = data.map(r => parseFloat(r[v])).filter(v => !isNaN(v));
+                        var txt = 'Perbandingan rata-rata untuk ' + vars.length + ' variabel:\n';
+                        vars.forEach(function(v) {
+                            var vals = data.map(function(r) { return parseFloat(r[v]); }).filter(function(v) {
+                                return !isNaN(v);
+                            });
                             if (!vals.length) return;
-                            const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
-                            const std = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / (vals.length -
-                            1));
-                            const se = std / Math.sqrt(vals.length);
-                            txt += `• ${v}: rata-rata = ${mean.toFixed(3)} (SE = ${se.toFixed(3)}, n = ${vals.length})\n`;
+                            var mean = vals.reduce(function(a, b) { return a + b; }, 0) / vals.length;
+                            var std = Math.sqrt(vals.reduce(function(a, b) { return a + (b - mean) * (b - mean); },
+                                0) / (vals.length - 1));
+                            var se = std / Math.sqrt(vals.length);
+                            txt += '• ' + v + ': rata-rata = ' + mean.toFixed(3) + ' (SE = ' + se.toFixed(3) +
+                                ', n = ' + vals.length + ')\n';
                         });
-                        txt += `\n💡 Nilai rata-rata tertinggi: ${vars.reduce(function(a,b) {
-                            const ma = data.map(r => parseFloat(r[a])).filter(v=>!isNaN(v));
-                            const mb = data.map(r => parseFloat(r[b])).filter(v=>!isNaN(v));
-                            return (ma.reduce((s,v)=>s+v,0)/ma.length) > (mb.reduce((s,v)=>s+v,0)/mb.length) ? a : b;
-                        })}`;
+                        var maxVar = vars.reduce(function(a, b) {
+                            var ma = data.map(function(r) { return parseFloat(r[a]); }).filter(function(v) {
+                                return !isNaN(v);
+                            });
+                            var mb = data.map(function(r) { return parseFloat(r[b]); }).filter(function(v) {
+                                return !isNaN(v);
+                            });
+                            return (ma.reduce(function(s, v) { return s + v; }, 0) / ma.length) > (mb.reduce(
+                                function(s, v) { return s + v; }, 0) / mb.length) ? a : b;
+                        });
+                        txt += '\n💡 Nilai rata-rata tertinggi: ' + maxVar;
                         return txt;
                     },
                     'correlation': function(vars, data) {
                         if (vars.length < 2) return 'Minimal 2 variabel untuk korelasi.';
-                        let txt = `Matriks korelasi Pearson untuk ${vars.length} variabel:\n`;
-                        let strongest = { pair: '', value: 0 };
-                        for (let i = 0; i < vars.length; i++) {
-                            for (let j = i + 1; j < vars.length; j++) {
-                                const a = data.map(r => parseFloat(r[vars[i]])).filter(v => !isNaN(v));
-                                const b = data.map(r => parseFloat(r[vars[j]])).filter(v => !isNaN(v));
-                                const n = Math.min(a.length, b.length);
+                        var txt = 'Matriks korelasi Pearson untuk ' + vars.length + ' variabel:\n';
+                        var strongest = { pair: '', value: 0 };
+                        for (var i = 0; i < vars.length; i++) {
+                            for (var j = i + 1; j < vars.length; j++) {
+                                var a = data.map(function(r) { return parseFloat(r[vars[i]]); }).filter(function(v) {
+                                    return !isNaN(v);
+                                });
+                                var b = data.map(function(r) { return parseFloat(r[vars[j]]); }).filter(function(v) {
+                                    return !isNaN(v);
+                                });
+                                var n = Math.min(a.length, b.length);
                                 if (n < 2) continue;
-                                const meanA = a.reduce((s, v) => s + v, 0) / n;
-                                const meanB = b.reduce((s, v) => s + v, 0) / n;
-                                let num = 0,
+                                var meanA = a.reduce(function(s, v) { return s + v; }, 0) / n;
+                                var meanB = b.reduce(function(s, v) { return s + v; }, 0) / n;
+                                var num = 0,
                                     denA = 0,
                                     denB = 0;
-                                for (let k = 0; k < n; k++) {
+                                for (var k = 0; k < n; k++) {
                                     num += (a[k] - meanA) * (b[k] - meanB);
-                                    denA += (a[k] - meanA) ** 2;
-                                    denB += (b[k] - meanB) ** 2;
+                                    denA += (a[k] - meanA) * (a[k] - meanA);
+                                    denB += (b[k] - meanB) * (b[k] - meanB);
                                 }
-                                const r = num / Math.sqrt(denA * denB);
-                                txt += `• ${vars[i]} ↔ ${vars[j]}: r = ${r.toFixed(3)} `;
+                                var r = num / Math.sqrt(denA * denB);
+                                txt += '• ' + vars[i] + ' ↔ ' + vars[j] + ': r = ' + r.toFixed(3) + ' ';
                                 if (Math.abs(r) > 0.7) txt += '(korelasi kuat)';
                                 else if (Math.abs(r) > 0.4) txt += '(korelasi sedang)';
                                 else txt += '(korelasi lemah)';
                                 txt += '\n';
                                 if (Math.abs(r) > Math.abs(strongest.value)) {
-                                    strongest = { pair: `${vars[i]} & ${vars[j]}`, value: r };
+                                    strongest = { pair: vars[i] + ' & ' + vars[j], value: r };
                                 }
                             }
                         }
                         if (strongest.pair) {
-                            txt +=
-                                `\n💡 Korelasi terkuat: ${strongest.pair} (r = ${strongest.value.toFixed(3)}) ${Math.abs(strongest.value) > 0.7 ? '✅ hubungan sangat kuat' : Math.abs(strongest.value) > 0.4 ? '⚠️ hubungan sedang' : 'ℹ️ hubungan lemah'}`;
+                            txt += '\n💡 Korelasi terkuat: ' + strongest.pair + ' (r = ' + strongest.value.toFixed(3) +
+                                ') ' + (Math.abs(strongest.value) > 0.7 ? '✅ hubungan sangat kuat' : Math.abs(
+                                    strongest.value) > 0.4 ? '⚠️ hubungan sedang' : 'ℹ️ hubungan lemah');
                         }
                         return txt;
                     },
                     'regression': function(vars, data) {
                         if (vars.length < 2) return 'Minimal 2 variabel untuk regresi.';
-                        const dep = vars[0];
-                        const indep = vars.slice(1);
-                        let txt =
-                            `Analisis regresi linear dengan ${dep} sebagai variabel dependen dan ${indep.join(', ')} sebagai prediktor:\n`;
-                        indep.forEach(iv => {
-                            const vals = data.map(r => ({ dep: parseFloat(r[dep]), indep: parseFloat(r[
-                                    iv]) }))
-                                .filter(v => !isNaN(v.dep) && !isNaN(v.indep));
+                        var dep = vars[0];
+                        var indep = vars.slice(1);
+                        var txt = 'Analisis regresi linear dengan ' + dep +
+                            ' sebagai variabel dependen dan ' + indep.join(', ') + ' sebagai prediktor:\n';
+                        indep.forEach(function(iv) {
+                            var vals = data.map(function(r) { return { dep: parseFloat(r[dep]), indep: parseFloat(
+                                        r[iv]) }; })
+                                .filter(function(v) { return !isNaN(v.dep) && !isNaN(v.indep); });
                             if (vals.length < 2) return;
-                            const a = vals.map(v => v.dep);
-                            const b = vals.map(v => v.indep);
-                            const n = a.length;
-                            const meanA = a.reduce((s, v) => s + v, 0) / n;
-                            const meanB = b.reduce((s, v) => s + v, 0) / n;
-                            let num = 0,
+                            var a = vals.map(function(v) { return v.dep; });
+                            var b = vals.map(function(v) { return v.indep; });
+                            var n = a.length;
+                            var meanA = a.reduce(function(s, v) { return s + v; }, 0) / n;
+                            var meanB = b.reduce(function(s, v) { return s + v; }, 0) / n;
+                            var num = 0,
                                 denA = 0,
                                 denB = 0;
-                            for (let k = 0; k < n; k++) {
+                            for (var k = 0; k < n; k++) {
                                 num += (a[k] - meanA) * (b[k] - meanB);
-                                denA += (a[k] - meanA) ** 2;
-                                denB += (b[k] - meanB) ** 2;
+                                denA += (a[k] - meanA) * (a[k] - meanA);
+                                denB += (b[k] - meanB) * (b[k] - meanB);
                             }
-                            const r = num / Math.sqrt(denA * denB);
-                            txt += `• ${iv}: koefisien korelasi r = ${r.toFixed(3)} `;
-                            txt +=
-                                `${Math.abs(r) > 0.7 ? '✅ prediktor kuat' : Math.abs(r) > 0.4 ? '⚠️ prediktor sedang' : 'ℹ️ prediktor lemah'}\n`;
+                            var r = num / Math.sqrt(denA * denB);
+                            txt += '• ' + iv + ': koefisien korelasi r = ' + r.toFixed(3) + ' ';
+                            txt += (Math.abs(r) > 0.7 ? '✅ prediktor kuat' : Math.abs(r) > 0.4 ?
+                                '⚠️ prediktor sedang' : 'ℹ️ prediktor lemah') + '\n';
                         });
-                        txt += `\n💡 Model regresi menggunakan ${indep.length} prediktor untuk memprediksi ${dep}.`;
+                        txt += '\n💡 Model regresi menggunakan ' + indep.length + ' prediktor untuk memprediksi ' + dep +
+                            '.';
                         return txt;
                     },
                     'reliability': function(vars, data) {
                         if (vars.length < 2) return 'Minimal 2 variabel untuk reliabilitas.';
-                        const items = vars.map(v => data.map(r => parseFloat(r[v])).filter(v => !isNaN(v)));
-                        const n = Math.min(...items.map(arr => arr.length));
+                        var items = vars.map(function(v) { return data.map(function(r) { return parseFloat(r[v]); })
+                                .filter(function(v) { return !isNaN(v); }); });
+                        var n = Math.min.apply(null, items.map(function(arr) { return arr.length; }));
                         if (n < 2) return 'Data tidak cukup untuk menghitung reliabilitas.';
-                        const itemVals = items.map(arr => arr.slice(0, n));
-                        const total = itemVals.reduce((acc, arr) => acc.map((v, i) => v + arr[i]), Array(n).fill(0));
-                        const meanTotal = total.reduce((a, b) => a + b, 0) / n;
-                        const varTotal = total.reduce((s, v) => s + (v - meanTotal) ** 2, 0) / (n - 1);
-                        let sumVar = 0;
-                        itemVals.forEach(arr => {
-                            const mean = arr.reduce((a, b) => a + b, 0) / n;
-                            sumVar += arr.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1);
+                        var itemVals = items.map(function(arr) { return arr.slice(0, n); });
+                        var total = itemVals.reduce(function(acc, arr) { return acc.map(function(v, i) { return v + arr[
+                                i]; }); }, Array(n).fill(0));
+                        var meanTotal = total.reduce(function(a, b) { return a + b; }, 0) / n;
+                        var varTotal = total.reduce(function(s, v) { return s + (v - meanTotal) * (v - meanTotal); },
+                            0) / (n - 1);
+                        var sumVar = 0;
+                        itemVals.forEach(function(arr) {
+                            var mean = arr.reduce(function(a, b) { return a + b; }, 0) / n;
+                            sumVar += arr.reduce(function(a, b) { return a + (b - mean) * (b - mean); }, 0) / (
+                                n - 1);
                         });
-                        const alpha = (itemVals.length / (itemVals.length - 1)) * (1 - sumVar / varTotal);
-                        let txt =
-                            `Uji reliabilitas Cronbach Alpha dengan ${vars.length} item dan ${n} responden:\n`;
-                        txt += `• Cronbach Alpha = ${alpha.toFixed(4)}\n`;
+                        var alpha = (itemVals.length / (itemVals.length - 1)) * (1 - sumVar / varTotal);
+                        var txt = 'Uji reliabilitas Cronbach Alpha dengan ' + vars.length + ' item dan ' + n +
+                            ' responden:\n';
+                        txt += '• Cronbach Alpha = ' + alpha.toFixed(4) + '\n';
                         if (alpha >= 0.9) txt += '✅ Kualitas sangat baik (Excellent)';
                         else if (alpha >= 0.8) txt += '✅ Kualitas baik (Good)';
                         else if (alpha >= 0.7) txt += '⚠️ Kualitas dapat diterima (Acceptable)';
                         else if (alpha >= 0.6) txt += '⚠️ Kualitas dipertanyakan (Questionable)';
                         else txt += '❌ Kualitas tidak dapat diterima (Unacceptable)';
-                        txt += `\n💡 ${alpha >= 0.7 ? 'Instrumen reliabel dan dapat digunakan.' : 'Instrumen perlu perbaikan untuk meningkatkan reliabilitas.'}`;
+                        txt += '\n💡 ' + (alpha >= 0.7 ?
+                            'Instrumen reliabel dan dapat digunakan.' :
+                            'Instrumen perlu perbaikan untuk meningkatkan reliabilitas.');
                         return txt;
                     },
                     'validity': function(vars, data) {
                         if (vars.length < 2) return 'Minimal 2 variabel untuk validitas.';
-                        let txt = `Uji validitas konstruk menggunakan korelasi Pearson:\n`;
-                        let validCount = 0;
-                        for (let i = 0; i < vars.length; i++) {
-                            for (let j = i + 1; j < vars.length; j++) {
-                                const a = data.map(r => parseFloat(r[vars[i]])).filter(v => !isNaN(v));
-                                const b = data.map(r => parseFloat(r[vars[j]])).filter(v => !isNaN(v));
-                                const n = Math.min(a.length, b.length);
+                        var txt = 'Uji validitas konstruk menggunakan korelasi Pearson:\n';
+                        var validCount = 0;
+                        for (var i = 0; i < vars.length; i++) {
+                            for (var j = i + 1; j < vars.length; j++) {
+                                var a = data.map(function(r) { return parseFloat(r[vars[i]]); }).filter(function(v) {
+                                    return !isNaN(v);
+                                });
+                                var b = data.map(function(r) { return parseFloat(r[vars[j]]); }).filter(function(v) {
+                                    return !isNaN(v);
+                                });
+                                var n = Math.min(a.length, b.length);
                                 if (n < 2) continue;
-                                const meanA = a.reduce((s, v) => s + v, 0) / n;
-                                const meanB = b.reduce((s, v) => s + v, 0) / n;
-                                let num = 0,
+                                var meanA = a.reduce(function(s, v) { return s + v; }, 0) / n;
+                                var meanB = b.reduce(function(s, v) { return s + v; }, 0) / n;
+                                var num = 0,
                                     denA = 0,
                                     denB = 0;
-                                for (let k = 0; k < n; k++) {
+                                for (var k = 0; k < n; k++) {
                                     num += (a[k] - meanA) * (b[k] - meanB);
-                                    denA += (a[k] - meanA) ** 2;
-                                    denB += (b[k] - meanB) ** 2;
+                                    denA += (a[k] - meanA) * (a[k] - meanA);
+                                    denB += (b[k] - meanB) * (b[k] - meanB);
                                 }
-                                const r = num / Math.sqrt(denA * denB);
-                                txt += `• ${vars[i]} ↔ ${vars[j]}: r = ${r.toFixed(3)} `;
-                                if (r > 0.3) {
-                                    txt += '✅ valid';
-                                    validCount++;
-                                } else {
-                                    txt += '❌ tidak valid';
-                                }
+                                var r = num / Math.sqrt(denA * denB);
+                                txt += '• ' + vars[i] + ' ↔ ' + vars[j] + ': r = ' + r.toFixed(3) + ' ';
+                                if (r > 0.3) { txt += '✅ valid';
+                                    validCount++; } else { txt += '❌ tidak valid'; }
                                 txt += '\n';
                             }
                         }
-                        const totalPairs = (vars.length * (vars.length - 1)) / 2;
-                        txt +=
-                            `\n💡 ${validCount} dari ${totalPairs} pasangan korelasi menunjukkan validitas yang baik (r > 0.3).`;
-                        if (validCount / totalPairs > 0.6) txt += ' ✅ Instrumen memiliki validitas konstruk yang baik.';
+                        var totalPairs = (vars.length * (vars.length - 1)) / 2;
+                        txt += '\n💡 ' + validCount + ' dari ' + totalPairs +
+                            ' pasangan korelasi menunjukkan validitas yang baik (r > 0.3).';
+                        if (validCount / totalPairs > 0.6) txt +=
+                        ' ✅ Instrumen memiliki validitas konstruk yang baik.';
                         else txt += ' ⚠️ Beberapa item perlu dievaluasi ulang.';
                         return txt;
                     },
                     'nonparam': function(vars, data) {
                         if (vars.length < 2) return 'Minimal 2 variabel untuk analisis non-parametrik.';
-                        let txt = `Korelasi Spearman (non-parametrik) untuk ${vars.length} variabel:\n`;
-                        let strongest = { pair: '', value: 0 };
-                        for (let i = 0; i < vars.length; i++) {
-                            for (let j = i + 1; j < vars.length; j++) {
-                                const a = data.map(r => parseFloat(r[vars[i]])).filter(v => !isNaN(v));
-                                const b = data.map(r => parseFloat(r[vars[j]])).filter(v => !isNaN(v));
-                                const n = Math.min(a.length, b.length);
+                        var txt = 'Korelasi Spearman (non-parametrik) untuk ' + vars.length + ' variabel:\n';
+                        var strongest = { pair: '', value: 0 };
+                        for (var i = 0; i < vars.length; i++) {
+                            for (var j = i + 1; j < vars.length; j++) {
+                                var a = data.map(function(r) { return parseFloat(r[vars[i]]); }).filter(function(v) {
+                                    return !isNaN(v);
+                                });
+                                var b = data.map(function(r) { return parseFloat(r[vars[j]]); }).filter(function(v) {
+                                    return !isNaN(v);
+                                });
+                                var n = Math.min(a.length, b.length);
                                 if (n < 2) continue;
-                                const rank = function(arr) {
-                                    const sorted = [...arr].sort((a, b) => a - b);
-                                    return arr.map(v => sorted.indexOf(v) + 1);
+                                var rank = function(arr) {
+                                    var sorted = arr.slice().sort(function(a, b) { return a - b; });
+                                    return arr.map(function(v) { return sorted.indexOf(v) + 1; });
                                 };
-                                const ra = rank(a.slice(0, n));
-                                const rb = rank(b.slice(0, n));
-                                const meanA = ra.reduce((s, v) => s + v, 0) / n;
-                                const meanB = rb.reduce((s, v) => s + v, 0) / n;
-                                let num = 0,
+                                var ra = rank(a.slice(0, n));
+                                var rb = rank(b.slice(0, n));
+                                var meanA = ra.reduce(function(s, v) { return s + v; }, 0) / n;
+                                var meanB = rb.reduce(function(s, v) { return s + v; }, 0) / n;
+                                var num = 0,
                                     denA = 0,
                                     denB = 0;
-                                for (let k = 0; k < n; k++) {
+                                for (var k = 0; k < n; k++) {
                                     num += (ra[k] - meanA) * (rb[k] - meanB);
-                                    denA += (ra[k] - meanA) ** 2;
-                                    denB += (rb[k] - meanB) ** 2;
+                                    denA += (ra[k] - meanA) * (ra[k] - meanA);
+                                    denB += (rb[k] - meanB) * (rb[k] - meanB);
                                 }
-                                const rho = num / Math.sqrt(denA * denB);
-                                txt += `• ${vars[i]} ↔ ${vars[j]}: ρ = ${rho.toFixed(3)} `;
+                                var rho = num / Math.sqrt(denA * denB);
+                                txt += '• ' + vars[i] + ' ↔ ' + vars[j] + ': ρ = ' + rho.toFixed(3) + ' ';
                                 if (Math.abs(rho) > 0.7) txt += '(hubungan kuat)';
                                 else if (Math.abs(rho) > 0.4) txt += '(hubungan sedang)';
                                 else txt += '(hubungan lemah)';
                                 txt += '\n';
                                 if (Math.abs(rho) > Math.abs(strongest.value)) {
-                                    strongest = { pair: `${vars[i]} & ${vars[j]}`, value: rho };
+                                    strongest = { pair: vars[i] + ' & ' + vars[j], value: rho };
                                 }
                             }
                         }
                         if (strongest.pair) {
-                            txt +=
-                                `\n💡 Hubungan terkuat: ${strongest.pair} (ρ = ${strongest.value.toFixed(3)}) ${Math.abs(strongest.value) > 0.7 ? '✅ hubungan monotonik kuat' : Math.abs(strongest.value) > 0.4 ? '⚠️ hubungan sedang' : 'ℹ️ hubungan lemah'}`;
+                            txt += '\n💡 Hubungan terkuat: ' + strongest.pair + ' (ρ = ' + strongest.value.toFixed(3) +
+                                ') ' + (Math.abs(strongest.value) > 0.7 ? '✅ hubungan monotonik kuat' : Math.abs(
+                                    strongest.value) > 0.4 ? '⚠️ hubungan sedang' : 'ℹ️ hubungan lemah');
                         }
-                        txt += `\n📌 Analisis non-parametrik cocok untuk data yang tidak berdistribusi normal.`;
+                        txt += '\n📌 Analisis non-parametrik cocok untuk data yang tidak berdistribusi normal.';
                         return txt;
                     }
                 };
@@ -964,7 +1015,7 @@
             }
 
             function getExplanation(method) {
-                const explanations = {
+                var explanations = {
                     'descriptives': '📘 <strong>Deskriptif</strong> — Menampilkan ringkasan statistik dasar: jumlah data (N), rata-rata (Mean), standar deviasi (Std), nilai minimum dan maksimum.',
                     'ttest': '📘 <strong>Compare Means</strong> — Menampilkan rata-rata (Mean), jumlah data (N), dan standar error (Std Error) untuk setiap variabel.',
                     'correlation': '📘 <strong>Korelasi</strong> — Matriks korelasi Pearson. Nilai mendekati +1 = hubungan positif, mendekati -1 = hubungan negatif.',
@@ -976,224 +1027,245 @@
                 return explanations[method] || '📘 Hasil analisis statistik.';
             }
 
+            // ============================================================
+            //  RUN METHODS
+            // ============================================================
             function runDescriptive(vars) {
                 if (!data.length || !vars.length) return { html: '<p style="color:#b02b2b;">Tidak ada variabel numerik.</p>',
                     conclusion: '' };
-                let html = '<table><tr><th>Variabel</th><th>N</th><th>Mean</th><th>Std</th><th>Min</th><th>Max</th></tr>';
-                vars.forEach(v => {
-                    const vals = data.map(r => parseFloat(r[v])).filter(v => !isNaN(v));
+                var html = '<table><tr><th>Variabel</th><th>N</th><th>Mean</th><th>Std</th><th>Min</th><th>Max</th></tr>';
+                vars.forEach(function(v) {
+                    var vals = data.map(function(r) { return parseFloat(r[v]); }).filter(function(v) { return !
+                        isNaN(v); });
                     if (!vals.length) return;
-                    const n = vals.length;
-                    const mean = vals.reduce((a, b) => a + b, 0) / n;
-                    const std = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1));
-                    const min = Math.min(...vals);
-                    const max = Math.max(...vals);
-                    html +=
-                        `<tr><td><strong>${v}</strong></td><td>${n}</td><td>${mean.toFixed(3)}</td><td>${std.toFixed(3)}</td><td>${min.toFixed(2)}</td><td>${max.toFixed(2)}</td></tr>`;
+                    var n = vals.length;
+                    var mean = vals.reduce(function(a, b) { return a + b; }, 0) / n;
+                    var std = Math.sqrt(vals.reduce(function(a, b) { return a + (b - mean) * (b - mean); }, 0) / (
+                        n - 1));
+                    var min = Math.min.apply(null, vals);
+                    var max = Math.max.apply(null, vals);
+                    html += '<tr><td><strong>' + v + '</strong></td><td>' + n + '</td><td>' + mean.toFixed(3) +
+                        '</td><td>' + std.toFixed(3) + '</td><td>' + min.toFixed(2) + '</td><td>' + max.toFixed(2) +
+                        '</td></tr>';
                 });
                 html += '</table>';
-                const conclusion = getConclusion('descriptives', vars, data);
-                return { html, conclusion, explanation: getExplanation('descriptives') };
+                var conclusion = getConclusion('descriptives', vars, data);
+                return { html: html, conclusion: conclusion, explanation: getExplanation('descriptives') };
             }
 
             function runCorrelation(vars) {
                 if (vars.length < 2) return { html: '<p style="color:#b02b2b;">Minimal 2 variabel numerik untuk korelasi.</p>',
                     conclusion: '' };
-                let html = '<table><tr><th></th>';
-                vars.forEach(v => html += `<th>${v}</th>`);
+                var html = '<table><tr><th></th>';
+                vars.forEach(function(v) { html += '<th>' + v + '</th>'; });
                 html += '</tr>';
-                for (let i = 0; i < vars.length; i++) {
-                    html += `<tr><td><strong>${vars[i]}</strong></td>`;
-                    for (let j = 0; j < vars.length; j++) {
+                for (var i = 0; i < vars.length; i++) {
+                    html += '<tr><td><strong>' + vars[i] + '</strong></td>';
+                    for (var j = 0; j < vars.length; j++) {
                         if (i === j) { html += '<td>1.000</td>';
                             continue; }
-                        const a = data.map(r => parseFloat(r[vars[i]])).filter(v => !isNaN(v));
-                        const b = data.map(r => parseFloat(r[vars[j]])).filter(v => !isNaN(v));
-                        const n = Math.min(a.length, b.length);
+                        var a = data.map(function(r) { return parseFloat(r[vars[i]]); }).filter(function(v) { return !
+                            isNaN(v); });
+                        var b = data.map(function(r) { return parseFloat(r[vars[j]]); }).filter(function(v) { return !
+                            isNaN(v); });
+                        var n = Math.min(a.length, b.length);
                         if (n < 2) { html += '<td>—</td>';
                             continue; }
-                        const meanA = a.reduce((s, v) => s + v, 0) / n;
-                        const meanB = b.reduce((s, v) => s + v, 0) / n;
-                        let num = 0,
+                        var meanA = a.reduce(function(s, v) { return s + v; }, 0) / n;
+                        var meanB = b.reduce(function(s, v) { return s + v; }, 0) / n;
+                        var num = 0,
                             denA = 0,
                             denB = 0;
-                        for (let k = 0; k < n; k++) {
+                        for (var k = 0; k < n; k++) {
                             num += (a[k] - meanA) * (b[k] - meanB);
-                            denA += (a[k] - meanA) ** 2;
-                            denB += (b[k] - meanB) ** 2;
+                            denA += (a[k] - meanA) * (a[k] - meanA);
+                            denB += (b[k] - meanB) * (b[k] - meanB);
                         }
-                        const r = num / Math.sqrt(denA * denB);
-                        html += `<td>${r.toFixed(3)}</td>`;
+                        var r = num / Math.sqrt(denA * denB);
+                        html += '<td>' + r.toFixed(3) + '</td>';
                     }
                     html += '</tr>';
                 }
                 html += '</table>';
-                const conclusion = getConclusion('correlation', vars, data);
-                return { html, conclusion, explanation: getExplanation('correlation') };
+                var conclusion = getConclusion('correlation', vars, data);
+                return { html: html, conclusion: conclusion, explanation: getExplanation('correlation') };
             }
 
             function runCompareMeans(vars) {
                 if (!vars.length) return { html: '<p style="color:#b02b2b;">Tidak ada variabel numerik.</p>',
                     conclusion: '' };
-                let html = '<table><tr><th>Variabel</th><th>N</th><th>Mean</th><th>Std Error</th></tr>';
-                vars.forEach(v => {
-                    const vals = data.map(r => parseFloat(r[v])).filter(v => !isNaN(v));
+                var html = '<table><tr><th>Variabel</th><th>N</th><th>Mean</th><th>Std Error</th></tr>';
+                vars.forEach(function(v) {
+                    var vals = data.map(function(r) { return parseFloat(r[v]); }).filter(function(v) { return !
+                        isNaN(v); });
                     if (!vals.length) return;
-                    const n = vals.length;
-                    const mean = vals.reduce((a, b) => a + b, 0) / n;
-                    const std = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1));
-                    const se = std / Math.sqrt(n);
-                    html += `<tr><td><strong>${v}</strong></td><td>${n}</td><td>${mean.toFixed(3)}</td><td>${se.toFixed(3)}</td></tr>`;
+                    var n = vals.length;
+                    var mean = vals.reduce(function(a, b) { return a + b; }, 0) / n;
+                    var std = Math.sqrt(vals.reduce(function(a, b) { return a + (b - mean) * (b - mean); }, 0) / (
+                        n - 1));
+                    var se = std / Math.sqrt(n);
+                    html += '<tr><td><strong>' + v + '</strong></td><td>' + n + '</td><td>' + mean.toFixed(3) +
+                        '</td><td>' + se.toFixed(3) + '</td></tr>';
                 });
                 html += '</table>';
-                const conclusion = getConclusion('ttest', vars, data);
-                return { html, conclusion, explanation: getExplanation('ttest') };
+                var conclusion = getConclusion('ttest', vars, data);
+                return { html: html, conclusion: conclusion, explanation: getExplanation('ttest') };
             }
 
             function runRegression(vars) {
                 if (vars.length < 2) return { html: '<p style="color:#b02b2b;">Minimal 2 variabel untuk regresi.</p>',
                     conclusion: '' };
-                const dep = vars[0];
-                const indep = vars.slice(1);
-                const vals = data.map(r => ({ dep: parseFloat(r[dep]), indep: indep.map(iv => parseFloat(r[iv])) }))
-                    .filter(v => !isNaN(v.dep) && v.indep.every(iv => !isNaN(iv)));
+                var dep = vars[0];
+                var indep = vars.slice(1);
+                var vals = data.map(function(r) { return { dep: parseFloat(r[dep]), indep: indep.map(function(iv) {
+                            return parseFloat(r[iv]); }) }; })
+                    .filter(function(v) { return !isNaN(v.dep) && v.indep.every(function(iv) { return !isNaN(iv); }); });
                 if (vals.length < 3) return { html: '<p style="color:#b02b2b;">Data tidak cukup.</p>', conclusion: '' };
-                let html = `<p><strong>Regresi Linear: ${dep} ~ ${indep.join(' + ')}</strong></p>`;
+                var html = '<p><strong>Regresi Linear: ' + dep + ' ~ ' + indep.join(' + ') + '</strong></p>';
                 html += '<table><tr><th>Prediktor</th><th>Koefisien (r)</th></tr>';
-                indep.forEach(iv => {
-                    const a = vals.map(v => v.dep);
-                    const b = vals.map(v => v.indep[indep.indexOf(iv)]);
-                    const n = a.length;
-                    const meanA = a.reduce((s, v) => s + v, 0) / n;
-                    const meanB = b.reduce((s, v) => s + v, 0) / n;
-                    let num = 0,
+                indep.forEach(function(iv) {
+                    var a = vals.map(function(v) { return v.dep; });
+                    var b = vals.map(function(v) { return v.indep[indep.indexOf(iv)]; });
+                    var n = a.length;
+                    var meanA = a.reduce(function(s, v) { return s + v; }, 0) / n;
+                    var meanB = b.reduce(function(s, v) { return s + v; }, 0) / n;
+                    var num = 0,
                         denA = 0,
                         denB = 0;
-                    for (let k = 0; k < n; k++) {
+                    for (var k = 0; k < n; k++) {
                         num += (a[k] - meanA) * (b[k] - meanB);
-                        denA += (a[k] - meanA) ** 2;
-                        denB += (b[k] - meanB) ** 2;
+                        denA += (a[k] - meanA) * (a[k] - meanA);
+                        denB += (b[k] - meanB) * (b[k] - meanB);
                     }
-                    const r = num / Math.sqrt(denA * denB);
-                    html += `<tr><td>${iv}</td><td>${r.toFixed(3)}</td></tr>`;
+                    var r = num / Math.sqrt(denA * denB);
+                    html += '<tr><td>' + iv + '</td><td>' + r.toFixed(3) + '</td></tr>';
                 });
                 html += '</table>';
-                const conclusion = getConclusion('regression', vars, data);
-                return { html, conclusion, explanation: getExplanation('regression') };
+                var conclusion = getConclusion('regression', vars, data);
+                return { html: html, conclusion: conclusion, explanation: getExplanation('regression') };
             }
 
             function runReliability(vars) {
                 if (vars.length < 2) return { html: '<p style="color:#b02b2b;">Minimal 2 variabel untuk reliabilitas.</p>',
                     conclusion: '' };
-                const items = vars.map(v => data.map(r => parseFloat(r[v])).filter(v => !isNaN(v)));
-                const n = Math.min(...items.map(arr => arr.length));
+                var items = vars.map(function(v) { return data.map(function(r) { return parseFloat(r[v]); }).filter(
+                    function(v) { return !isNaN(v); }); });
+                var n = Math.min.apply(null, items.map(function(arr) { return arr.length; }));
                 if (n < 2) return { html: '<p style="color:#b02b2b;">Data tidak cukup.</p>', conclusion: '' };
-                const itemVals = items.map(arr => arr.slice(0, n));
-                const total = itemVals.reduce((acc, arr) => acc.map((v, i) => v + arr[i]), Array(n).fill(0));
-                const meanTotal = total.reduce((a, b) => a + b, 0) / n;
-                const varTotal = total.reduce((s, v) => s + (v - meanTotal) ** 2, 0) / (n - 1);
-                let sumVar = 0;
-                itemVals.forEach(arr => {
-                    const mean = arr.reduce((a, b) => a + b, 0) / n;
-                    sumVar += arr.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1);
+                var itemVals = items.map(function(arr) { return arr.slice(0, n); });
+                var total = itemVals.reduce(function(acc, arr) { return acc.map(function(v, i) { return v + arr[i]; }); },
+                    Array(n).fill(0));
+                var meanTotal = total.reduce(function(a, b) { return a + b; }, 0) / n;
+                var varTotal = total.reduce(function(s, v) { return s + (v - meanTotal) * (v - meanTotal); }, 0) / (n -
+                1);
+                var sumVar = 0;
+                itemVals.forEach(function(arr) {
+                    var mean = arr.reduce(function(a, b) { return a + b; }, 0) / n;
+                    sumVar += arr.reduce(function(a, b) { return a + (b - mean) * (b - mean); }, 0) / (n - 1);
                 });
-                const alpha = (itemVals.length / (itemVals.length - 1)) * (1 - sumVar / varTotal);
-                let status = alpha >= 0.7 ? '✅ Reliabilitas baik' : '⚠️ Reliabilitas perlu ditingkatkan';
-                let html =
-                    `<p><strong>Cronbach Alpha:</strong> ${alpha.toFixed(4)}</p>
-                               <p style="font-size:0.9rem; color:#2a4f73;">Jumlah item: ${vars.length} | Responden: n=${n}</p>
-                               <p style="font-size:0.9rem; font-weight:500;">${status}</p>`;
-                const conclusion = getConclusion('reliability', vars, data);
-                return { html, conclusion, explanation: getExplanation('reliability') };
+                var alpha = (itemVals.length / (itemVals.length - 1)) * (1 - sumVar / varTotal);
+                var status = alpha >= 0.7 ? '✅ Reliabilitas baik' : '⚠️ Reliabilitas perlu ditingkatkan';
+                var html = '<p><strong>Cronbach Alpha:</strong> ' + alpha.toFixed(4) +
+                    '</p><p style="font-size:0.9rem; color:#2a4f73;">Jumlah item: ' + vars.length +
+                    ' | Responden: n=' + n +
+                    '</p><p style="font-size:0.9rem; font-weight:500;">' + status + '</p>';
+                var conclusion = getConclusion('reliability', vars, data);
+                return { html: html, conclusion: conclusion, explanation: getExplanation('reliability') };
             }
 
             function runValidity(vars) {
                 if (vars.length < 2) return { html: '<p style="color:#b02b2b;">Minimal 2 variabel untuk validitas.</p>',
                     conclusion: '' };
-                let html = '<p><strong>Korelasi Pearson (validitas konstruk)</strong></p><table><tr><th></th>';
-                vars.forEach(v => html += `<th>${v}</th>`);
+                var html = '<p><strong>Korelasi Pearson (validitas konstruk)</strong></p><table><tr><th></th>';
+                vars.forEach(function(v) { html += '<th>' + v + '</th>'; });
                 html += '</tr>';
-                for (let i = 0; i < vars.length; i++) {
-                    html += `<tr><td><strong>${vars[i]}</strong></td>`;
-                    for (let j = 0; j < vars.length; j++) {
+                for (var i = 0; i < vars.length; i++) {
+                    html += '<tr><td><strong>' + vars[i] + '</strong></td>';
+                    for (var j = 0; j < vars.length; j++) {
                         if (i === j) { html += '<td>1.000</td>';
                             continue; }
-                        const a = data.map(r => parseFloat(r[vars[i]])).filter(v => !isNaN(v));
-                        const b = data.map(r => parseFloat(r[vars[j]])).filter(v => !isNaN(v));
-                        const n = Math.min(a.length, b.length);
+                        var a = data.map(function(r) { return parseFloat(r[vars[i]]); }).filter(function(v) { return !
+                            isNaN(v); });
+                        var b = data.map(function(r) { return parseFloat(r[vars[j]]); }).filter(function(v) { return !
+                            isNaN(v); });
+                        var n = Math.min(a.length, b.length);
                         if (n < 2) { html += '<td>—</td>';
                             continue; }
-                        const meanA = a.reduce((s, v) => s + v, 0) / n;
-                        const meanB = b.reduce((s, v) => s + v, 0) / n;
-                        let num = 0,
+                        var meanA = a.reduce(function(s, v) { return s + v; }, 0) / n;
+                        var meanB = b.reduce(function(s, v) { return s + v; }, 0) / n;
+                        var num = 0,
                             denA = 0,
                             denB = 0;
-                        for (let k = 0; k < n; k++) {
+                        for (var k = 0; k < n; k++) {
                             num += (a[k] - meanA) * (b[k] - meanB);
-                            denA += (a[k] - meanA) ** 2;
-                            denB += (b[k] - meanB) ** 2;
+                            denA += (a[k] - meanA) * (a[k] - meanA);
+                            denB += (b[k] - meanB) * (b[k] - meanB);
                         }
-                        const r = num / Math.sqrt(denA * denB);
-                        html += `<td>${r.toFixed(3)}</td>`;
+                        var r = num / Math.sqrt(denA * denB);
+                        html += '<td>' + r.toFixed(3) + '</td>';
                     }
                     html += '</tr>';
                 }
                 html += '</table>';
-                const conclusion = getConclusion('validity', vars, data);
-                return { html, conclusion, explanation: getExplanation('validity') };
+                var conclusion = getConclusion('validity', vars, data);
+                return { html: html, conclusion: conclusion, explanation: getExplanation('validity') };
             }
 
             function runNonParam(vars) {
                 if (vars.length < 2) return { html: '<p style="color:#b02b2b;">Minimal 2 variabel.</p>', conclusion: '' };
-                let html = '<p><strong>Korelasi Spearman (non-parametrik)</strong></p><table><tr><th></th>';
-                vars.forEach(v => html += `<th>${v}</th>`);
+                var html = '<p><strong>Korelasi Spearman (non-parametrik)</strong></p><table><tr><th></th>';
+                vars.forEach(function(v) { html += '<th>' + v + '</th>'; });
                 html += '</tr>';
-                for (let i = 0; i < vars.length; i++) {
-                    html += `<tr><td><strong>${vars[i]}</strong></td>`;
-                    for (let j = 0; j < vars.length; j++) {
+                for (var i = 0; i < vars.length; i++) {
+                    html += '<tr><td><strong>' + vars[i] + '</strong></td>';
+                    for (var j = 0; j < vars.length; j++) {
                         if (i === j) { html += '<td>1.000</td>';
                             continue; }
-                        const a = data.map(r => parseFloat(r[vars[i]])).filter(v => !isNaN(v));
-                        const b = data.map(r => parseFloat(r[vars[j]])).filter(v => !isNaN(v));
-                        const n = Math.min(a.length, b.length);
+                        var a = data.map(function(r) { return parseFloat(r[vars[i]]); }).filter(function(v) { return !
+                            isNaN(v); });
+                        var b = data.map(function(r) { return parseFloat(r[vars[j]]); }).filter(function(v) { return !
+                            isNaN(v); });
+                        var n = Math.min(a.length, b.length);
                         if (n < 2) { html += '<td>—</td>';
                             continue; }
-                        const rank = function(arr) {
-                            const sorted = [...arr].sort((a, b) => a - b);
-                            return arr.map(v => sorted.indexOf(v) + 1);
+                        var rank = function(arr) {
+                            var sorted = arr.slice().sort(function(a, b) { return a - b; });
+                            return arr.map(function(v) { return sorted.indexOf(v) + 1; });
                         };
-                        const ra = rank(a.slice(0, n));
-                        const rb = rank(b.slice(0, n));
-                        const meanA = ra.reduce((s, v) => s + v, 0) / n;
-                        const meanB = rb.reduce((s, v) => s + v, 0) / n;
-                        let num = 0,
+                        var ra = rank(a.slice(0, n));
+                        var rb = rank(b.slice(0, n));
+                        var meanA = ra.reduce(function(s, v) { return s + v; }, 0) / n;
+                        var meanB = rb.reduce(function(s, v) { return s + v; }, 0) / n;
+                        var num = 0,
                             denA = 0,
                             denB = 0;
-                        for (let k = 0; k < n; k++) {
+                        for (var k = 0; k < n; k++) {
                             num += (ra[k] - meanA) * (rb[k] - meanB);
-                            denA += (ra[k] - meanA) ** 2;
-                            denB += (rb[k] - meanB) ** 2;
+                            denA += (ra[k] - meanA) * (ra[k] - meanA);
+                            denB += (rb[k] - meanB) * (rb[k] - meanB);
                         }
-                        const rho = num / Math.sqrt(denA * denB);
-                        html += `<td>${rho.toFixed(3)}</td>`;
+                        var rho = num / Math.sqrt(denA * denB);
+                        html += '<td>' + rho.toFixed(3) + '</td>';
                     }
                     html += '</tr>';
                 }
                 html += '</table>';
-                const conclusion = getConclusion('nonparam', vars, data);
-                return { html, conclusion, explanation: getExplanation('nonparam') };
+                var conclusion = getConclusion('nonparam', vars, data);
+                return { html: html, conclusion: conclusion, explanation: getExplanation('nonparam') };
             }
 
-            // ---------- main run ----------
+            // ============================================================
+            //  RUN CURRENT METHOD
+            // ============================================================
             function runCurrentMethod() {
-                const vars = numericVars.length ? numericVars : headers;
+                var vars = numericVars.length ? numericVars : headers;
                 if (!vars.length) {
                     resultContent.innerHTML = '<p style="color:#6a85a5;">Tidak ada variabel numerik. Impor data terlebih dahulu.</p>';
                     methodBadge.textContent = '—';
                     return;
                 }
 
-                let result;
+                var result;
                 switch (selectedMethod) {
                     case 'descriptives':
                         result = runDescriptive(vars);
@@ -1218,23 +1290,23 @@
                         break;
                     default:
                         result = { html: '<p style="color:#6a85a5;">Pilih metode analisis.</p>', conclusion: '',
-                        explanation: '' };
+                            explanation: '' };
                 }
 
-                let output = result.html || '<p style="color:#6a85a5;">Hasil kosong</p>';
+                var output = result.html || '<p style="color:#6a85a5;">Hasil kosong</p>';
 
                 if (result.explanation) {
-                    output += `<div class="explanation">${result.explanation}</div>`;
+                    output += '<div class="explanation">' + result.explanation + '</div>';
                 }
 
                 if (result.conclusion) {
-                    const conclusionText = result.conclusion.replace(/\n/g, '<br>');
-                    output += `<div class="conclusion"><strong>📌 Kesimpulan:</strong><br>${conclusionText}</div>`;
+                    var conclusionText = result.conclusion.replace(/\n/g, '<br>');
+                    output += '<div class="conclusion"><strong>📌 Kesimpulan:</strong><br>' + conclusionText + '</div>';
                 }
 
                 resultContent.innerHTML = output;
 
-                const methodMap = {
+                var methodMap = {
                     'descriptives': 'Deskriptif',
                     'ttest': 'Compare Means',
                     'correlation': 'Korelasi',
@@ -1245,25 +1317,27 @@
                 };
                 methodBadge.textContent = methodMap[selectedMethod] || selectedMethod;
 
-                const firstVar = numericVars.length ? numericVars[0] : headers[0];
+                var firstVar = numericVars.length ? numericVars[0] : headers[0];
                 updateChart(firstVar);
             }
 
-            // ---------- Manual Input ----------
+            // ============================================================
+            //  MANUAL INPUT
+            // ============================================================
             function applyManualDataFn() {
-                const headerStr = manualHeaders.value.trim();
-                const dataStr = manualData.value.trim();
+                var headerStr = manualHeaders.value.trim();
+                var dataStr = manualData.value.trim();
                 if (!headerStr || !dataStr) {
                     alert('Isi nama kolom dan data terlebih dahulu.');
                     return;
                 }
-                const h = headerStr.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+                var h = headerStr.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
                 if (h.length < 1) {
                     alert('Minimal 1 kolom.');
                     return;
                 }
-                const rows = dataStr.split('\n').map(function(line) { return line.trim(); }).filter(function(line) { return line; });
-                const result = [];
+                var rows = dataStr.split('\n').map(function(line) { return line.trim(); }).filter(function(line) { return line; });
+                var result = [];
                 for (var ri = 0; ri < rows.length; ri++) {
                     var row = rows[ri];
                     var vals = row.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s !== ''; });
@@ -1288,7 +1362,10 @@
                 fileStatus.textContent = '✅ ' + result.length + ' baris (manual input)';
             }
 
-            // ---------- event binding ----------
+            // ============================================================
+            //  EVENT BINDING
+            // ============================================================
+            // Sidebar items
             for (var i = 0; i < sidebarItems.length; i++) {
                 (function(item) {
                     item.addEventListener('click', function(e) {
@@ -1302,6 +1379,7 @@
                 })(sidebarItems[i]);
             }
 
+            // File import
             fileInput.addEventListener('change', function(e) {
                 var file = e.target.files[0];
                 if (!file) return;
@@ -1323,6 +1401,7 @@
                 reader.readAsArrayBuffer(file);
             });
 
+            // Sample data
             loadSample.addEventListener('click', function() {
                 var sample = [];
                 for (var i = 1; i <= 30; i++) {
@@ -1338,6 +1417,7 @@
                 fileStatus.textContent = '✅ Sample data (' + sample.length + ' baris)';
             });
 
+            // Manual data dialog
             manualDataBtn.addEventListener('click', function() {
                 manualDialog.style.display = 'flex';
             });
@@ -1349,9 +1429,13 @@
                 if (e.target === manualDialog) manualDialog.style.display = 'none';
             });
 
-            // Inisialisasi sample
+            // ============================================================
+            //  INIT
+            // ============================================================
             loadSample.click();
+
         })();
     </script>
+
 </body>
 </html>
